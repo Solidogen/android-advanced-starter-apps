@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         Fragment simpleFragment = getSupportFragmentManager().findFragmentByTag(SimpleFragment.TAG);
-        isFragmentDisplayed = simpleFragment != null && simpleFragment.isVisible();
+        isFragmentDisplayed = simpleFragment != null && simpleFragment.getUserVisibleHint();
         if (isFragmentDisplayed) {
             mButton.setText(R.string.close);
         } else {
