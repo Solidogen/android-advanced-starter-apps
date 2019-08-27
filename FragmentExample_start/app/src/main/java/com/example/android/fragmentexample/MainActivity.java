@@ -16,14 +16,17 @@
 
 package com.example.android.fragmentexample;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String TAG = "MainActivity";
     private boolean isFragmentDisplayed = false;
     private Button mButton;
 
@@ -36,22 +39,59 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mButton = findViewById(R.id.button);
-
-        if (savedInstanceState == null) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .add(R.id.fragment_container, SimpleFragment.newInstance(), SimpleFragment.TAG)
-                    .addToBackStack(null)
-                    .commit();
-        }
+        mButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!isFragmentDisplayed) {
+                    displayFragment();
+                } else {
+                    closeFragment();
+                }
+                Log.e(TAG, getSupportFragmentManager().getFragments().toString());
+            }
+        });
 
         Log.e(this.toString(), "onCreate");
     }
 
     @Override
-    public void onAttachFragment(Fragment fragment) {
-        super.onAttachFragment(fragment);
-        Log.e(this.toString(), "onAttachFragment");
+    protected void onStart() {
+        super.onStart();
+        Fragment simpleFragment = getSupportFragmentManager().findFragmentByTag(SimpleFragment.TAG);
+        isFragmentDisplayed = simpleFragment != null && simpleFragment.isVisible();
+        if (isFragmentDisplayed) {
+            mButton.setText(R.string.close);
+        } else {
+            mButton.setText(R.string.open);
+        }
+
+        Log.e(this.toString(), "onStart");
+    }
+
+    private void displayFragment() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.fragment_container, SimpleFragment.newInstance(), SimpleFragment.TAG)
+                .commit();
+
+        mButton.setText(R.string.close);
+
+        isFragmentDisplayed = true;
+    }
+
+    public void closeFragment() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        SimpleFragment simpleFragment = (SimpleFragment) fragmentManager.findFragmentById(R.id.fragment_container);
+        if (simpleFragment != null) {
+            fragmentManager
+                    .beginTransaction()
+                    .remove(simpleFragment)
+                    .commit();
+        }
+
+        mButton.setText(R.string.open);
+
+        isFragmentDisplayed = false;
     }
 
     @Override
