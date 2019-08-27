@@ -16,14 +16,33 @@
 
 package com.example.android.fragmentexample;
 
+import android.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 public class MainActivity extends AppCompatActivity {
 
+    /*
+    * FragmentManager (after configuration change) reattaches all fragments to Activity
+    * Then we can find them with e.g. findFragmentByTag
+    * */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Log.e(this.toString(), "onCreate");
+    }
+
+    @Override
+    public void onAttachFragment(Fragment fragment) {
+        super.onAttachFragment(fragment);
+        Log.e(this.toString(), "onAttachFragment");
+    }
+
+    @Override
+    public void onAttachFragment(android.support.v4.app.Fragment fragment) {
+        super.onAttachFragment(fragment);
+        Log.e(this.toString(), "onAttachFragment v4");
     }
 }
