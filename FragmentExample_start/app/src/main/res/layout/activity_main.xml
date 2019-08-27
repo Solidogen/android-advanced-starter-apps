@@ -35,6 +35,17 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/beatles_anthology_box"/>
 
+    <Button
+        android:id="@+id/button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/open"
+        android:layout_marginLeft="@dimen/small_padding"
+        android:layout_marginTop="@dimen/small_padding"
+        app:layout_constraintTop_toBottomOf="@id/imageView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/imageView" />
+
     <TextView
         android:id="@+id/title"
         android:layout_width="0dp"
@@ -73,14 +84,12 @@
             tools:layout_editor_absoluteY="288dp"/>
     </ScrollView>
 
-    <fragment
-        android:id="@+id/fragment"
-        android:name="com.example.android.fragmentexample.SimpleFragment"
+    <FrameLayout
+        android:id="@+id/fragment_container"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout="@layout/fragment_simple" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

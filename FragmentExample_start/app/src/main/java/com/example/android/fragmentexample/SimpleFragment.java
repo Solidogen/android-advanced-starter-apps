@@ -23,9 +23,9 @@ import android.widget.TextView;
  */
 public class SimpleFragment extends Fragment {
 
+    public static final String TAG = "SimpleFragment";
     private static final int YES = 0;
     private static final int NO = 1;
-
 
     public SimpleFragment() {
         // Required empty public constructor
@@ -188,5 +188,9 @@ public class SimpleFragment extends Fragment {
     public void onDestroyOptionsMenu() {
         super.onDestroyOptionsMenu();
         Log.e(this.toString(), "onDestroyOptionsMenu");
+    }
+
+    public static SimpleFragment newInstance() {
+        return new SimpleFragment();
     }
 }

@@ -20,8 +20,12 @@ import android.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
+
+    private boolean isFragmentDisplayed = false;
+    private Button mButton;
 
     /*
     * FragmentManager (after configuration change) reattaches all fragments to Activity
@@ -31,6 +35,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mButton = findViewById(R.id.button);
+
+        if (savedInstanceState == null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.fragment_container, SimpleFragment.newInstance(), SimpleFragment.TAG)
+                    .addToBackStack(null)
+                    .commit();
+        }
+
         Log.e(this.toString(), "onCreate");
     }
 
