@@ -42,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
         mButton = findViewById(R.id.button);
 
         if (savedInstanceState != null) {
+            // if savedInstanceState is not null, all fragments are reattached and added to activity
+            // no need to do anything, otherwise we will have 2 fragments overlapping
+
             isFragmentDisplayed = savedInstanceState.getBoolean(IS_FRAGMENT_DISPLAYED_KEY);
             if (isFragmentDisplayed) {
                 mButton.setText(R.string.close);
