@@ -16,10 +16,9 @@
 
 package com.example.android.fragmentexample;
 
-import android.support.v4.app.Fragment;
+import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -29,16 +28,26 @@ public class MainActivity extends AppCompatActivity {
     public static final String TAG = "MainActivity";
     private boolean isFragmentDisplayed = false;
     private Button mButton;
+    static final String IS_FRAGMENT_DISPLAYED_KEY = "state_of_fragment";
 
     /*
-    * FragmentManager (after configuration change) reattaches all fragments to Activity
-    * Then we can find them with e.g. findFragmentByTag
-    * */
+     * FragmentManager (after configuration change) reattaches all fragments to Activity
+     * Then we can find them with e.g. findFragmentByTag
+     * */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         mButton = findViewById(R.id.button);
+
+        if (savedInstanceState != null) {
+            isFragmentDisplayed = savedInstanceState.getBoolean(IS_FRAGMENT_DISPLAYED_KEY);
+            if (isFragmentDisplayed) {
+                mButton.setText(R.string.close);
+            }
+        }
+
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,15 +66,25 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Fragment simpleFragment = getSupportFragmentManager().findFragmentByTag(SimpleFragment.TAG);
-        isFragmentDisplayed = simpleFragment != null && simpleFragment.getUserVisibleHint();
-        if (isFragmentDisplayed) {
-            mButton.setText(R.string.close);
-        } else {
-            mButton.setText(R.string.open);
-        }
+
+//        Below works as well, but probably not reliable as much. Or so?...
+//
+//        Fragment simpleFragment = getSupportFragmentManager().findFragmentByTag(SimpleFragment.TAG);
+//        isFragmentDisplayed = simpleFragment != null && simpleFragment.getUserVisibleHint();
+//        if (isFragmentDisplayed) {
+//            mButton.setText(R.string.close);
+//        } else {
+//            mButton.setText(R.string.open);
+//        }
+
 
         Log.e(this.toString(), "onStart");
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putBoolean(IS_FRAGMENT_DISPLAYED_KEY, isFragmentDisplayed);
+        super.onSaveInstanceState(outState);
     }
 
     private void displayFragment() {
